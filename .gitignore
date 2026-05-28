@@ -1,4 +1,6 @@
 # ── Flutter / Dart ───────────────────────────────────────────────
+.DS_Store
+
 .dart_tool/
 .packages
 build/

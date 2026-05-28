@@ -11,84 +11,68 @@
 part of 'app_router.dart';
 
 /// generated route for
-/// [ExampleDetailPage]
-class ExampleDetailRoute extends PageRouteInfo<ExampleDetailRouteArgs> {
-  ExampleDetailRoute({
-    required String id,
-    Key? key,
-    List<PageRouteInfo>? children,
-  }) : super(
-          ExampleDetailRoute.name,
-          args: ExampleDetailRouteArgs(id: id, key: key),
-          rawPathParams: {'id': id},
-          initialChildren: children,
-        );
+/// [ChatListPage]
+class ChatListRoute extends PageRouteInfo<void> {
+  const ChatListRoute({List<PageRouteInfo>? children})
+      : super(ChatListRoute.name, initialChildren: children);
 
-  static const String name = 'ExampleDetailRoute';
+  static const String name = 'ChatListRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      final pathParams = data.inheritedPathParams;
-      final args = data.argsAs<ExampleDetailRouteArgs>(
-        orElse: () => ExampleDetailRouteArgs(id: pathParams.getString('id')),
-      );
-      return ExampleDetailPage(id: args.id, key: args.key);
-    },
-  );
-}
-
-class ExampleDetailRouteArgs {
-  const ExampleDetailRouteArgs({required this.id, this.key});
-
-  final String id;
-
-  final Key? key;
-
-  @override
-  String toString() {
-    return 'ExampleDetailRouteArgs{id: $id, key: $key}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! ExampleDetailRouteArgs) return false;
-    return id == other.id && key == other.key;
-  }
-
-  @override
-  int get hashCode => id.hashCode ^ key.hashCode;
-}
-
-/// generated route for
-/// [HomePage]
-class HomeRoute extends PageRouteInfo<void> {
-  const HomeRoute({List<PageRouteInfo>? children})
-      : super(HomeRoute.name, initialChildren: children);
-
-  static const String name = 'HomeRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const HomePage();
+      return const ChatListPage();
     },
   );
 }
 
 /// generated route for
 /// [ChatPage]
-class ChatRoute extends PageRouteInfo<void> {
-  const ChatRoute({List<PageRouteInfo>? children})
-      : super(ChatRoute.name, initialChildren: children);
+class ChatRoute extends PageRouteInfo<ChatRouteArgs> {
+  ChatRoute({
+    required String chatId,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ChatRoute.name,
+          args: ChatRouteArgs(chatId: chatId, key: key),
+          rawPathParams: {'chatId': chatId},
+          initialChildren: children,
+        );
 
   static const String name = 'ChatRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ChatPage();
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<ChatRouteArgs>(
+        orElse: () => ChatRouteArgs(chatId: pathParams.getString('chatId')),
+      );
+      return ChatPage(chatId: args.chatId, key: args.key);
     },
   );
+}
+
+class ChatRouteArgs {
+  const ChatRouteArgs({required this.chatId, this.key});
+
+  final String chatId;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ChatRouteArgs{chatId: $chatId, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ChatRouteArgs) return false;
+    return chatId == other.chatId && key == other.key;
+  }
+
+  @override
+  int get hashCode => chatId.hashCode ^ key.hashCode;
 }

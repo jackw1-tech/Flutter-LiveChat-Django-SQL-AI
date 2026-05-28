@@ -1,19 +1,40 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chat/repositories/chat_repository.dart';
 import 'package:flutter_chat/state_management/blocs/chat_bloc/chat_bloc.dart';
 import 'package:flutter_chat/ui/widgets/chat_message_bubble.dart';
 import 'package:flutter_chat/ui/widgets/chat_phase_indicator.dart';
 
 @RoutePage()
-class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
+class ChatPage extends StatelessWidget {
+  const ChatPage({
+    @PathParam('chatId') required this.chatId,
+    super.key,
+  });
+
+  final String chatId;
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => ChatBloc(
+        repository: context.read<ChatRepository>(),
+        chatId: chatId,
+      )..add(const ChatStarted()),
+      child: const _ChatView(),
+    );
+  }
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatView extends StatefulWidget {
+  const _ChatView();
+
+  @override
+  State<_ChatView> createState() => _ChatViewState();
+}
+
+class _ChatViewState extends State<_ChatView> {
   final _controller = TextEditingController();
   final _scrollController = ScrollController();
 
@@ -36,7 +57,8 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Chat')),
       body: BlocConsumer<ChatBloc, ChatState>(
-        listenWhen: (prev, curr) => prev.messages.length != curr.messages.length,
+        listenWhen: (prev, curr) =>
+            prev.messages.length != curr.messages.length,
         listener: (_, __) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (_scrollController.hasClients) {
@@ -67,7 +89,8 @@ class _ChatPageState extends State<ChatPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
                     state.errorMessage!,
-                    style: TextStyle(color: Theme.of(context).colorScheme.error),
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.error),
                   ),
                 ),
               SafeArea(

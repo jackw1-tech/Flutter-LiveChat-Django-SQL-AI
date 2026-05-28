@@ -1,7 +1,7 @@
 import 'package:pine/pine.dart';
 
-/// Pine-compatible DTO wrapping a chat-message record (from Supabase or
-/// from a local cache). Exists so [ChatMessageMapper] can extend
+/// Pine-compatible DTO wrapping a chat-message record from the backend.
+/// Exists so [ChatMessageMapper] can extend
 /// [DTOMapper], whose [Source] type parameter must extend [DTO].
 class ChatMessageRecordDto extends DTO {
   final String? id;

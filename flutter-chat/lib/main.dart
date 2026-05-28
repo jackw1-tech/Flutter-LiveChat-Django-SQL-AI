@@ -19,7 +19,7 @@ class FlutterChatApp extends StatelessWidget {
 
     return DependencyInjector(
         child: MaterialApp.router(
-      title: 'Flutter Chat',
+      title: 'AI Chat',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,

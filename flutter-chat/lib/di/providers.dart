@@ -4,9 +4,9 @@ final List<SingleChildWidget> _providers = [
   Provider<Dio>(
     create: (_) => Dio(
       BaseOptions(
-        baseUrl: Apicontants.baseApiUrl,
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 60),
+        baseUrl: Apicontants.baseApiUrl, // resolved at runtime per platform
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 120),
         headers: {'Content-Type': 'application/json'},
       ),
     ),

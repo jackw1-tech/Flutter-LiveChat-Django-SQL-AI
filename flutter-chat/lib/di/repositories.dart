@@ -5,6 +5,7 @@ final List<RepositoryProvider> repositories = [
     create: (context) => ChatRepositoryImpl(
       apiService: context.read<ChatApiService>(),
       localSqlService: context.read<LocalSqlService>(),
+      chatMessageMapper: context.read<ChatMessageMapper>(),
     ),
   ),
 ];

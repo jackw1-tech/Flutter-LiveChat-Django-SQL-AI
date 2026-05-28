@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat/model/entities/chat_message.dart';
+import 'package:flutter_chat/network/service/local_sql_service.dart';
 import 'package:flutter_chat/repositories/chat_repository.dart';
 import 'package:uuid/uuid.dart';
 
@@ -15,12 +16,28 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   })  : _repository = repository,
         _uuid = uuid ?? const Uuid(),
         super(ChatState(chatId: chatId ?? (uuid ?? const Uuid()).v4())) {
-    on<ChatStarted>((_, __) {});
+    on<ChatStarted>(_onStarted);
     on<ChatMessageSubmitted>(_onSubmitted);
   }
 
   final ChatRepository _repository;
   final Uuid _uuid;
+
+  Future<void> _onStarted(
+    ChatStarted event,
+    Emitter<ChatState> emit,
+  ) async {
+    emit(state.copyWith(status: ChatStatus.loadingHistory, clearError: true));
+    try {
+      final messages = await _repository.listMessages(state.chatId);
+      emit(state.copyWith(messages: messages, status: ChatStatus.ready));
+    } catch (error) {
+      emit(state.copyWith(
+        status: ChatStatus.failure,
+        errorMessage: error.toString(),
+      ));
+    }
+  }
 
   Future<void> _onSubmitted(
     ChatMessageSubmitted event,
@@ -72,6 +89,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           }
         },
       );
+    } on UnsafeSqlException {
+      emit(state.copyWith(
+        status: ChatStatus.failure,
+        errorMessage: 'Non sono riuscito a elaborare la domanda. Prova a riformularla.',
+      ));
     } catch (error) {
       emit(state.copyWith(
         status: ChatStatus.failure,

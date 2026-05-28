@@ -7,6 +7,8 @@ class ChatPhaseIndicator extends StatelessWidget {
 
   String? get _label {
     switch (status) {
+      case ChatStatus.loadingHistory:
+        return 'Loading conversation…';
       case ChatStatus.generatingQuery:
         return 'Generating SQL query…';
       case ChatStatus.executingLocalQuery:

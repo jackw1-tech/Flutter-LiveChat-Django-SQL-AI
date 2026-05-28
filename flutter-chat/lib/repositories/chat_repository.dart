@@ -1,9 +1,16 @@
 import 'package:flutter_chat/model/entities/chat_message.dart';
+import 'package:flutter_chat/model/entities/chat_session.dart';
 
 /// Domain-facing contract used by the BLoC. The implementation hides the
 /// SQL-then-answer dance behind a single stream so the presentation layer
 /// just renders phase updates.
 abstract class ChatRepository {
+  Future<List<ChatSession>> listChats();
+
+  Future<ChatSession> createChat();
+
+  Future<List<ChatMessage>> listMessages(String chatId);
+
   /// Drive the full pipeline:
   ///   1) POST message -> SQL
   ///   2) execute SQL on local sqflite

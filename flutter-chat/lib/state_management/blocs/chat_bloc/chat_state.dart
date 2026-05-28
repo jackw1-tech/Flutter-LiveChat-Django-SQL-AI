@@ -3,6 +3,7 @@ part of 'chat_bloc.dart';
 /// Coarse pipeline status surfaced to the UI.
 enum ChatStatus {
   idle,
+  loadingHistory,
   generatingQuery,
   executingLocalQuery,
   waitingFinalResponse,
@@ -26,6 +27,7 @@ class ChatState extends Equatable {
   });
 
   bool get isBusy =>
+      status == ChatStatus.loadingHistory ||
       status == ChatStatus.generatingQuery ||
       status == ChatStatus.executingLocalQuery ||
       status == ChatStatus.waitingFinalResponse;
